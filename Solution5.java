@@ -57,21 +57,22 @@ class Solution5 {
             int maxValue = target - nums[i];
             int pos = binarySearch(nums, maxValue) - 1;
             int contribute = (pos >= i) ? f[pos - i] : 0;
-            ans = (ans + contribute) / P;
+            ans = (ans + contribute) % P; // 此处应取模
         }
 
         return ans;
     }
 
     public void pretreatment() {
-        f[0] = 0;
+        f[0] = 1; // f[0] 应该初始化为 1，而不是 0
         for (int i = 1; i < MAX_N; ++i) {
             f[i] = (f[i - 1] << 1) % P;
         }
     }
 
     public int binarySearch(int[] nums, int target) {
-        int low = 0, high = nums.length;
+        int low = 0;
+        int high = nums.length - 1; // 此处应该是 nums.length - 1，而不是 nums.length
         while (low <= high) {
             int mid = (high - low) / 2 + low;
             if (mid == nums.length) {
@@ -81,7 +82,7 @@ class Solution5 {
             if (num <= target) {
                 low = mid + 1;
             } else {
-                high = mid;
+                high = mid - 1; // 此处应该是 mid - 1，而不是 mid
             }
         }
         return low;
